@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <Match>
+        <Bug pattern="SE_NO_SERIALVERSIONID" />
+    </Match>
+    <!-- パッケージ指定でチェック対象外 -->
+    <Match classregex=".*\.hoge\..*">
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2" />
+    </Match>
+    <!-- クラス名指定でチェック対象外 -->
+    <Match>
+        <Class name="example.Ata" />
+    </Match>
+</FindBugsFilter>

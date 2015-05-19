@@ -1,0 +1,122 @@
+plugins {
+    id "java"
+    id "groovy"
+    id "idea"
+    id "eclipse"
+    id 'findbugs'
+    id "jacoco"
+    id 'pmd'
+    id 'checkstyle'
+    id 'jdepend'
+    id 'codenarc'
+    id 'de.aaschmid.cpd' version '0.4'
+}
+
+defaultTasks "clean", "build", "jacocoTestReport"
+
+def defaultEncoding = 'UTF-8'
+tasks.withType(AbstractCompile) each { it.options.encoding = defaultEncoding }
+tasks.withType(GroovyCompile) each { it.groovyOptions.encoding = defaultEncoding }
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.projectlombok:lombok:1.14.8'
+
+    testCompile 'org.codehaus.groovy:groovy-all:2.4.3'
+    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+}
+
+task wrapper(type: Wrapper) { gradleVersion = '2.4' }
+
+eclipse {
+    pathVariables GRADLE_REPO: file(System.properties['user.home'] + '/.gradle/cache')
+}
+
+findbugs {
+    ignoreFailures = true
+    sourceSets = [sourceSets.main]
+    reportsDir = file("${project.buildDir}/reports/findbugs")
+    excludeFilter = new File("${project.rootDir}/config/findbugs-exlude-filter.xml")
+    effort = 'max'
+}
+
+tasks.withType(FindBugs) {
+    reports {
+        html {
+            enabled = true
+            destination = "${findbugs.reportsDir}/findbugs.html"
+        }
+        xml.enabled = !html.enabled
+    }
+}
+
+
+jacoco {
+    toolVersion = '0.7.4.201502262128'
+    reportsDir = file("${project.buildDir}/reports/customJacocoReportDir")
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "${project.buildDir}/reports/jacocoHtml"
+    }
+}
+
+pmd {
+    toolVersion = '5.1.3'
+    ignoreFailures = true
+    targetJdk = '1.7'
+    sourceSets = [sourceSets.main]
+    reportsDir = file("${project.buildDir}/reports/pmd")
+    ruleSets = ['java-basic'
+                , 'java-naming'
+    ]
+    ruleSetFiles = files("${project.rootDir}/config/pmd-ruleset.xml")
+}
+
+cpd {
+    language = 'java'
+//    toolVersion = '5.1.3' // defaults to '5.3.0'; just available for v5.2.0 and higher (see explanation above)
+    ignoreFailures = true
+}
+cpdCheck {
+    reports {
+        text.enabled = true
+        xml.enabled = !text.enabled
+    }
+}
+
+checkstyle {
+    toolVersion = '6.6'
+    ignoreFailures = true
+    configFile = file("${project.rootDir}/config/checkstyle.xml")
+    sourceSets = [ sourceSets.main, sourceSets.test ]
+}
+
+jdepend {
+    ignoreFailures = true
+    toolVersion = "2.9.1"
+
+    sourceSets = [sourceSets.main]
+}
+
+jdependMain {
+    reports {
+        xml.enabled false
+        text.enabled = !xml.enabled
+    }
+}
+
+codenarc {
+    configFile = file( "${rootDir}/config/codenarc.groovy" )
+    toolVersion = "0.23"
+    ignoreFailures = true
+    codenarcMain.enabled = false
+    codenarcTest.enabled = true
+//    reportFormat = 'xml'
+}
