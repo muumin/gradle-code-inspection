@@ -73,9 +73,6 @@ pmd {
     targetJdk = '1.7'
     sourceSets = [sourceSets.main]
     reportsDir = file("${project.buildDir}/reports/pmd")
-    ruleSets = ['java-basic'
-                , 'java-naming'
-    ]
     ruleSetFiles = files("${project.rootDir}/config/pmd-ruleset.xml")
 }
 

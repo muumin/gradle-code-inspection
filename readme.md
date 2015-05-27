@@ -39,7 +39,7 @@ config/findbugs_exlude_filter.xmlにてパッケージ単位/クラス名などで定義可能
 ## チェック回避
 
 * 「//NOPMD」で行単位で回避
-* config/pmd-ruleset.xmlにて定義可能（なはずだが効いてくれない。。。。）
+* config/pmd-ruleset.xmlにて定義可能
 
 # PMD-CPD
 
