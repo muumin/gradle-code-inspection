@@ -12,7 +12,7 @@ plugins {
     id 'de.aaschmid.cpd' version '0.4'
 }
 
-defaultTasks "clean", "build", "jacocoTestReport"
+defaultTasks "clean", "build", "jacocoTestReport", "javadoc"
 
 def defaultEncoding = 'UTF-8'
 tasks.withType(AbstractCompile) each { it.options.encoding = defaultEncoding }
@@ -118,4 +118,10 @@ codenarc {
     codenarcMain.enabled = false
     codenarcTest.enabled = true
 //    reportFormat = 'xml'
+}
+
+javadoc {
+    source = sourceSets.main.allJava
+    options.encoding = 'utf-8'
+    options.memberLevel = JavadocMemberLevel.PRIVATE
 }
