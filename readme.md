@@ -1,4 +1,4 @@
-�ÓI�R�[�h��̓T���v��
+静的コード解析サンプル
 =====================================
 
 * checkstyle
@@ -9,52 +9,66 @@
 * JDepend
 * codenarc
 
-�ȉ��̃R�}���h�����s�����build/reports�z���ɉ�͌��ʂ��o�͂����B
+以下のコマンドを実行するとbuild/reports配下に解析結果が出力される。
 
     gradlew
 
 # checkstyle
 
-�R�[�f�B���O�K����`�F�b�N���邽�߂̐ÓI��̓c�[��
+コーディング規約をチェックするための静的解析ツール
 
-## �`�F�b�N���
+## チェック回避
 
-�ȉ��̃R�����g���g�p�\
+以下のコメントが使用可能
 
-* �u//CHECKSTYLE IGNORE THIS LINE�v�ōs�P�ʂŉ��
-* �u//CHECKSTYLE:OFF�v����u//CHECKSTYLE:ON�v�܂ŕ����s�P�ʂŉ��
+* 「//CHECKSTYLE IGNORE THIS LINE」で行単位で回避
+* 「//CHECKSTYLE:OFF」から「//CHECKSTYLE:ON」まで複数行単位で回避
 
 # findbugs
 
-�o�C�g�R�[�h�ƃo�O�E�p�^�[�����X�g���r���ăv���O�������̃G���[�ƂȂ�\���̍����R�[�h����͂���c�[��
+バイトコードとバグ・パターンリストを比較してプログラム内のエラーとなる可能性の高いコードを解析するツール
 
-## �`�F�b�N���
+## チェック回避
 
-config/findbugs_exlude_filter.xml�ɂăp�b�P�[�W�P��/�N���X���ȂǂŒ�`�\
+config/findbugs_exlude_filter.xmlにてパッケージ単位/クラス名などで定義可能
+
+## xmlで結果出力
+
+enabled = falseに変更する
+
+    tasks.withType(FindBugs) {
+        reports {
+            html {
+                enabled = false
+                destination = "${findbugs.reportsDir}/findbugs.html"
+            }
+            xml.enabled = !html.enabled
+        }
+    }
 
 # PMD
 
-���ݓI�ȃo�O��R�[�f�B���O�K����`�F�b�N���邱�Ƃ��ł���ÓI��̓c�[��
+潜在的なバグやコーディング規約をチェックすることができる静的解析ツール
 
-## �`�F�b�N���
+## チェック回避
 
-* �u//NOPMD�v�ōs�P�ʂŉ��
-* config/pmd-ruleset.xml�ɂĒ�`�\
+* 「//NOPMD」で行単位で回避
+* config/pmd-ruleset.xmlにて定義可能
 
 # PMD-CPD
 
-�d���R�[�h���o�c�[��
+重複コード検出ツール
 
 # JaCoCo
 
-�R�[�h�J�o���b�W�v���c�[��
+コードカバレッジ計測ツール
 
 # JDepend
 
-Java�p�b�P�[�W�P�ʂ̃��g���N�X�𑪒肷��c�[��
+Javaパッケージ単位のメトリクスを測定するツール
 
 # CodeNarc
 
-Groovy�����̐ÓI�R�[�h��̓c�[��
+Groovy向けの静的コード解析ツール
 
-config/codenarc.groovy�Ń`�F�b�N���郋�[����ǉ��\
+config/codenarc.groovyでチェックするルールを追加可能
