@@ -1,0 +1,28 @@
+# 事前にdata volumeを作成する
+# docker volume create --name sonar_data
+# docker volume create --name mysql_data
+
+mysql:
+  image: mysql:5.7
+  volumes:
+    - mysql_data:/var/lib/mysql
+  environment:
+    - MYSQL_USER=sonar
+    - MYSQL_PASSWORD=sonar
+    - MYSQL_DATABASE=sonar
+    - MYSQL_ROOT_PASSWORD=sonar
+  ports:
+    - "3306:3306"
+
+sonar:
+  image: sonarqube:5.6
+  ports:
+    - "9000:9000"
+  links:
+    - mysql:mysql
+  volumes:
+    - sonar_data:/opt/sonarqube/extensions
+  environment:
+    - SONARQUBE_JDBC_USERNAME=sonar
+    - SONARQUBE_JDBC_PASSWORD=sonar
+    - SONARQUBE_JDBC_URL=jdbc:mysql://mysql:3306/sonar?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true

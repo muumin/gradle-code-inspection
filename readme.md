@@ -8,6 +8,7 @@
 * JaCoCo
 * JDepend
 * codenarc
+* SonarQube
 
 以下のコマンドを実行するとbuild/reports配下に解析結果が出力される。
 
@@ -72,3 +73,43 @@ Javaパッケージ単位のメトリクスを測定するツール
 Groovy向けの静的コード解析ツール
 
 config/codenarc.groovyでチェックするルールを追加可能
+
+# SonarQube
+
+## Docker起動
+
+Dockerをインストールしたら Volume Data Container を作成する。
+
+    docker volume create --name sonar_data
+    docker volume create --name mysql_data
+
+配置したら以下のコマンドで起動する。
+
+    docker-compose up -d
+
+停止する場合は以下
+
+    docker-compose stop
+
+## sonar実行
+
+    % gradle clean build jacocoTestReport sonar
+
+## Volume Data Containerのバックアップ
+
+NAMESを調べる。
+
+    % docker ps
+    CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
+    56f8000f844c        sonarqube:5.6       "./bin/run.sh"           5 minutes ago       Up 4 minutes        0.0.0.0:9000->9000/tcp   gradleinspectionsample_sonar_1
+    d3b564b02064        mysql:5.7           "docker-entrypoint.sh"   5 minutes ago       Up 4 minutes        0.0.0.0:3306->3306/tcp   gradleinspectionsample_mysql_1
+
+DockerのCPコマンドでNAMESを指定してコピーする。
+
+    $ docker cp gradleinspectionsample_sonar_1:/opt/sonarqube/extensions .
+    $ tar -cvf sonar.tar extensions
+    $ rm -rf extensions
+    $ docker cp gradleinspectionsample_mysql_1:/var/lib/mysql .
+    $ tar -cvf mysql.tar mysql
+    $ rm -rf mysql
+

@@ -9,6 +9,7 @@ plugins {
     id 'checkstyle'
     id 'jdepend'
     id 'codenarc'
+    id 'org.sonarqube' version '2.0.1'
     id 'de.aaschmid.cpd' version '0.4'
 }
 
@@ -55,7 +56,7 @@ tasks.withType(FindBugs) {
 
 
 jacoco {
-    toolVersion = '0.7.4.201502262128'
+    toolVersion = '0.7.7.201606060606'
     reportsDir = file("${project.buildDir}/reports/customJacocoReportDir")
 }
 
@@ -124,4 +125,12 @@ javadoc {
     source = sourceSets.main.allJava
     options.encoding = 'utf-8'
     options.memberLevel = JavadocMemberLevel.PRIVATE
+}
+
+sonarqube {
+    properties {
+        property 'sonar.host.url', 'http://192.168.99.100:9000/'
+        property 'sonar.login', 'admin'
+        property 'sonar.password', 'admin'
+    }
 }
