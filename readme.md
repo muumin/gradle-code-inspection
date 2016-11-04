@@ -31,7 +31,7 @@
 
 ## チェック回避
 
-config/findbugs_exlude_filter.xmlにてパッケージ単位/クラス名などで定義可能
+config/findbugs\_exlude\_filter.xmlにてパッケージ単位/クラス名などで定義可能
 
 ## xmlで結果出力
 
@@ -78,12 +78,7 @@ config/codenarc.groovyでチェックするルールを追加可能
 
 ## Docker起動
 
-Dockerをインストールしたら Volume Data Container を作成する。
-
-    docker volume create --name sonar_data
-    docker volume create --name mysql_data
-
-配置したら以下のコマンドで起動する。
+以下のコマンドで起動する。
 
     docker-compose up -d
 
@@ -91,9 +86,27 @@ Dockerをインストールしたら Volume Data Container を作成する。
 
     docker-compose stop
 
+停止とコンテナ削除を同時にする。
+
+    docker-compose stop && docker-compose rm --all -f
+
+Volume Data Containerの確認
+
+    docker volume ls
+
+不要なVolume Data Containerの一括削除
+
+    docker volume rm $(docker volume ls -qf dangling=true)
+
 ## sonar実行
 
     % gradle clean build jacocoTestReport sonar
+
+[http://192.168.99.100:9000/](http://192.168.99.100:9000/)]にアクセスするとsonerが表示される。
+
+http://192.168.99.100:9000/
+
+ログインはadmin/admin。
 
 ## Volume Data Containerのバックアップ
 
