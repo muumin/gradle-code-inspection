@@ -82,7 +82,7 @@ config/codenarc.groovyでチェックするルールを追加可能
 
     docker-compose up -d
 
-停止する場合は以下
+停止する。
 
     docker-compose stop
 
