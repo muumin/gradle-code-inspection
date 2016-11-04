@@ -9,7 +9,7 @@ plugins {
     id 'checkstyle'
     id 'jdepend'
     id 'codenarc'
-    id 'org.sonarqube' version '2.0.1'
+    id 'org.sonarqube' version '2.2'
     id 'de.aaschmid.cpd' version '0.4'
 }
 
@@ -30,7 +30,7 @@ dependencies {
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
 }
 
-task wrapper(type: Wrapper) { gradleVersion = '2.4' }
+task wrapper(type: Wrapper) { gradleVersion = '3.1' }
 
 eclipse {
     pathVariables GRADLE_REPO: file(System.properties['user.home'] + '/.gradle/cache')
