@@ -102,9 +102,7 @@ Volume Data Containerの確認
 
     % gradle clean build jacocoTestReport sonar
 
-[http://192.168.99.100:9000/](http://192.168.99.100:9000/)]にアクセスするとsonerが表示される。
-
-http://192.168.99.100:9000/
+[http://192.168.99.100:9000/](http://192.168.99.100:9000/)にアクセスするとsonerが表示される。
 
 ログインはadmin/admin。
 
